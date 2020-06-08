@@ -28,5 +28,19 @@ Run
 ```
 ./gradlew bootRun
 ```
-Read the [docs](http://localhost:8080/swagger-ui.html).
+
+### Usando o serviço
+Checar o [status](http://localhost:8080/actuator/health)
+
+Get random greeting
+```
+curl http://localhost:8080/greetings
+```
+
+Get greeting by id (example id = 1)
+```
+curl http://localhost:8080/greetings/1
+```
+
+Read the [docs](http://localhost:8080/swagger-ui.html) **// TO-DO**
 
