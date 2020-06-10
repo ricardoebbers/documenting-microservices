@@ -2,18 +2,21 @@ package br.ufpe.cin.documentingmicroservices.rest.controller
 
 import br.ufpe.cin.documentingmicroservices.domain.entity.Greeting
 import br.ufpe.cin.documentingmicroservices.domain.service.GreetingService
+import br.ufpe.cin.documentingmicroservices.rest.dto.CreateGreetingCommand
+import br.ufpe.cin.documentingmicroservices.rest.dto.ListGreetingQuery
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/greetings")
-@Tag(name = "Greetings API", description = "API de exemplo contendo saudações em 50 línguas " +
-        "diferentes")
+@Tag(name = "Greetings API",
+        description = "API de exemplo contendo saudações em 50 línguas diferentes")
 class GreetingController(
         private val service: GreetingService
 ) {
@@ -36,15 +39,19 @@ class GreetingController(
     @Operation(summary = "Listar saudações com paginação")
     @GetMapping("/")
     fun listPaginated(
-            @RequestParam(required = false) page: Int?,
-            @RequestParam(required = false) size: Int?
+            @Valid @Parameter(required = false) query: ListGreetingQuery?
     ): Page<Greeting> {
-        logger.info("I=called_list_paginated, page=$page, size=$size")
-        val pagination = if (page != null && size != null) {
-            PageRequest.of(page, size)
-        } else {
-            Pageable.unpaged()
-        }
-        return service.getGreetingPage(pagination)
+        logger.info("I=called_list_paginated, query=$query")
+        return service.getGreetingPage(query?.toPage() ?: Pageable.unpaged())
+    }
+
+
+    @Operation(summary = "Criar saudação")
+    @PostMapping("/")
+    fun createGreeting(
+            @Valid @RequestBody greeting: CreateGreetingCommand
+    ): Greeting {
+        logger.info("I=called_create_greeting, greeting=$greeting")
+        return service.createGreeting(greeting.toEntity())
     }
 }

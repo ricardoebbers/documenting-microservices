@@ -7,7 +7,7 @@ import javax.persistence.*
 data class Greeting(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Long,
+        val id: Long?,
         @Column(name = "lang")
         val language: String,
         @Column

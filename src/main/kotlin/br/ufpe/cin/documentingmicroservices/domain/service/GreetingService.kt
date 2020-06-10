@@ -8,4 +8,5 @@ interface GreetingService {
     fun randomGreeting(): Greeting
     fun getGreetingById(id: Long): Greeting
     fun getGreetingPage(pagination: Pageable): Page<Greeting>
+    fun createGreeting(greeting: Greeting): Greeting
 }

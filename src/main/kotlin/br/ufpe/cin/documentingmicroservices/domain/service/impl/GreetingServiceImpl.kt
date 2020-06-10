@@ -36,9 +36,16 @@ class GreetingServiceImpl(
     }
 
     override fun getGreetingPage(pagination: Pageable): Page<Greeting> {
-        logger.info("I=fetching_greeting_page, pagination=$pagination")
+        logger.info("I=fetching_greeting_page, isPaged=${pagination.isPaged}")
         return repository.findAll(pagination).also {
-            logger.info("I=returning_page, page=${it.pageable}")
+            logger.info("I=returning_page, totalElements=${it.totalElements}")
+        }
+    }
+
+    override fun createGreeting(greeting: Greeting): Greeting {
+        logger.info("I=creating_greeting, greeting=$greeting")
+        return repository.save(greeting).also {
+            logger.info("I=saved_greeting, greeting=$it")
         }
     }
 }
