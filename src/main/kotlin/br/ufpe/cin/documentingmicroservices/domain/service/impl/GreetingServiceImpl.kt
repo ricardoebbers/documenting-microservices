@@ -5,6 +5,8 @@ import br.ufpe.cin.documentingmicroservices.domain.repository.GreetingRepository
 import br.ufpe.cin.documentingmicroservices.domain.service.GreetingService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import javax.persistence.EntityNotFoundException
 
@@ -31,5 +33,12 @@ class GreetingServiceImpl(
                 }.also {
                     logger.info("I=returning_greeting, id=$id, greeting=$it")
                 }
+    }
+
+    override fun getGreetingPage(pagination: Pageable): Page<Greeting> {
+        logger.info("I=fetching_greeting_page, pagination=$pagination")
+        return repository.findAll(pagination).also {
+            logger.info("I=returning_page, page=${it.pageable}")
+        }
     }
 }
