@@ -28,7 +28,7 @@ class GreetingServiceImpl(
         return repository.findById(id)
                 .orElseThrow {
                     EntityNotFoundException().also {
-                        logger.error("E=failed_greeting_by_id, id=$id", it)
+                        logger.warn("E=failed_greeting_by_id, id=$id")
                     }
                 }.also {
                     logger.info("I=returning_greeting, id=$id, greeting=$it")
