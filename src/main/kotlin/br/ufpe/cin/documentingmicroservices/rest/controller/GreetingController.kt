@@ -10,9 +10,12 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
+import javax.validation.constraints.Positive
 
+@Validated
 @RestController
 @RequestMapping("/greetings")
 @Tag(name = "Greetings API",
@@ -31,7 +34,7 @@ class GreetingController(
 
     @Operation(summary = "Buscar saudação por Id")
     @GetMapping("/{id}")
-    fun findById(@PathVariable id: Long): Greeting {
+    fun findById(@Positive @PathVariable id: Long): Greeting {
         logger.info("I=called_find_by_id")
         return service.getGreetingById(id)
     }
